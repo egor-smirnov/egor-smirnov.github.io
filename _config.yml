@@ -1,0 +1,15 @@
+# Site settings
+title: Egor Smirnov
+subtitle: Full Stack Web Developer
+description: >
+  Tech blog of Egor Smirnov.
+  Exploring the world of backend and frontend web.
+baseurl: "" # the subpath of your site, e.g. /blog/
+url: "http://egorsmirnov.me" # the base hostname & protocol for your site
+twitter_username: egorsmirnovme
+github_username:  egor-smirnov
+
+# Build settings
+markdown: kramdown
+
+paginate: 7

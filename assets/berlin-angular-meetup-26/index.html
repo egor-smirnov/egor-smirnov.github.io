@@ -1,0 +1,993 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>AngularJS and ES2015+</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Egor Smirnov">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h1>AngularJS and ES2015+</h1>
+					<h3>Berlin Angular Meetup #26</h3>
+					<p>
+						<small>by <a href="http://egorsmirnov.me" target="_blank">Egor Smirnov</a> / 
+							<a href="http://twitter.com/egorsmirnovme" target="_blank">@egorsmirnovme</a></small>
+					</p>
+				</section>
+
+				<section>
+					<img src="images/es2015.jpg">
+					<h2>What is ES2015?</h2>
+					<ul>
+						<li>Current JavaScript Language Standard</li>
+						<li>Approved in June 2015</li>
+						<li>ES2015 == ECMAScript 2015 == ES6</li>
+						<li>Backward-compatible with ES5</li>
+					</ul>
+				</section>				
+
+				<section>
+					<img src="images/angular.png" style="background:white;">
+					<h2>How ES2015 relates to Angular?</h2>
+					<ul>
+						<li>Improves your <em>Developer Experience</em>, not the user experience</li>
+						<li>Future-proof</li>
+						<li>Good introduction to TypeScript (recommended for starting Angular2 applications); TypeScript is the superset of ES2015</li>
+					</ul>
+				</section>
+
+				<section>
+					<h1>Let's start with ES2015 Features</h1>
+				</section>
+
+				<section>
+					<h2>1. Let + Const</h2>
+				</section>
+
+				<section>
+					<h3>Let has a block scope</h3>
+					<pre>
+						<code class="hljs" data-trim>
+var apples = 5;
+if (true) {
+  var apples = 10;
+  console.log(apples); // 10
+}
+console.log(apples); // 10 
+						</code>
+					</pre>
+					<pre>
+						<code class="hljs" data-trim>
+let apples = 5;
+if (true) {
+  let apples = 10;
+  console.log(apples); // 10
+}
+console.log(apples); // 5
+						</code>
+					</pre>
+				</section>
+
+				<section>
+					<h3>Visible only after declaration</h3>
+					<pre>
+						<code class="hljs" data-trim>
+console.log(a); // undefined
+var a = 5;
+						</code>
+					</pre>
+					<pre>
+						<code class="hljs" data-trim>
+alert(a); // Uncaught SyntaxError: ...
+let a = 5;
+						</code>
+					</pre>
+				</section>
+
+				<section>
+					<h3>Const</h3>
+					<pre>
+						<code class="hljs" data-trim>
+const LANGUAGE = 'DE';
+LANGUAGE = 'EN'; 
+// Uncaught TypeError: Identifier 'LANGUAGE' has already been declared(…)
+						</code>
+					</pre>
+				</section>
+
+				<section>
+					<h2>2. Template Strings</h2>
+				</section>
+
+				<section>
+					<h2>Template Strings</h2>
+					<pre>
+						<code class="hljs" data-trim>
+let apples = 2;
+let oranges = 3;
+const template = `
+  <div>
+	${apples} + ${oranges} = ${apples + oranges}
+  </div>
+`;
+
+function myDirective() {
+  return {
+	template,
+	controller: DirectiveController,
+	controllerAs: 'ctrl',
+	restrict: 'E',
+	bindToController: true,
+	scope: {}
+  };
+}
+						</code>
+					</pre>
+				</section>
+
+				<section>
+					<h2>3. Modules</h2>
+				</section>
+
+				<section>
+					<h3>Modules</h3>
+					<ul>
+						<li>As soon as we have a complex project we decide to split it into multiple modules.</li>
+						<li>JavaScript already has various module loading standards - AMD / UMD / CommonJS.</li>
+						<li>ES2015 dictates new standard for module loading.</li>
+						<li>The difference is that now it is <em>official standard.</em></li>
+						<li>Still no native browser support, have to use SystemJS / webpack etc. to bundle modules.</li>
+					</ul>
+				</section>
+				
+				<section>
+					<h3>Modules & Angular 1.x</h3>
+					<pre>
+						<code class="hljs" data-trim>npm install --save angular angular-ui-router</code>
+					</pre>
+				</section>
+
+				<section>
+					<h3>Modules & Angular 1.x</h3>
+					<h4>routes.js</h4>
+					<pre>
+						<code class="hljs" data-trim>
+/*@ngInject*/
+function routes($stateProvider) {
+// state definitions here
+}
+export default angular.module('app.routes')
+  .config(routes);
+						</code>
+					</pre>
+					<h4>config.js</h4>
+					<pre>
+						<code class="hljs" data-trim>
+const configObject = {baseUrl: 'http://some-url.com'};
+export default angular.module('app.config')
+  .value(configObject);
+						</code>
+					</pre>
+				</section>
+				
+				<section>
+					<h3>Modules & Angular 1.x</h3>
+					<h4>main.js</h4>
+					<pre>
+						<code class="hljs" data-trim>
+import angular from 'angular';
+import angularUiRouter from 'angular-ui-router';
+import routes from './routes';
+import config from './config';
+
+export default angular.module('app', [
+  angularUiRouter,	
+  config.name,
+  routes.name
+]); 
+						</code>
+					</pre>					
+				</section>				
+
+				<section>
+					<h3>Modules</h3>
+					<h4>numbers.js</h4>
+					<pre>
+						<code class="hljs" data-trim>
+export let one = 1;
+export let two = 2;
+export let three = 3;							
+						</code>
+					</pre>
+					<h4>someFile.js</h4>
+					<pre>
+						<code class="hljs" data-trim>
+import {one, two as numberTwo} from "./numbers";
+console.log(`${one} and ${numberTwo}`); // prints '1 and 2'
+						</code>
+					</pre>
+					<h4>someOtherFile.js</h4>
+					<pre>
+						<code class="hljs" data-trim>
+import * as numbers from "./numbers";
+console.log(`${numbers.one} and ${numbers.two}`); // prints '1 and 2'
+						</code>
+					</pre>
+				</section>				
+
+				<section>
+					<h2>4. Classes</h2>
+				</section>
+
+
+				<section>
+					<h3>Classes</h3>
+					<ul>
+						<li>One of the most discussed features of ES2015.</li>
+						<li>Current ES2015 standard class supports inheritance (check this article - 
+							<a href="https://medium.com/@dan_abramov/how-to-use-classes-and-sleep-at-night-9af8de78ccb4" target="_blank">
+								https://medium.com/@dan_abramov/how-to-use-classes-and-sleep-at-night-9af8de78ccb4
+							</a>). 
+						</li>
+						<li>Current ES2015 standard includes getters / setters / computed properties / static methods.</li>
+						<li>Does not have private methods / props. </li>
+					</ul>
+				</section>
+				
+				<section>
+					<h3>Controller classes</h3>
+					<pre>
+						<code class="hljs" data-trim>
+class MyController {
+  /* @ngInject */
+  constructor(userService) {
+    this.fullName = userService.getFullName();
+  }
+}
+export MyController;
+angular.module('app').controller('MyController', MyController);
+						</code>
+					</pre>
+					<pre>
+						<code class="hljs" data-trim>
+import { MyController } from './MyController';
+angular.module('app', []).controller('MyController', MyController);
+							
+// or use this controller as directive controller somewhere
+
+angular.module('app').directive('MyDirective', function() {
+  return {
+    controller: MyController,
+    controllerAs: 'vm',
+    ...
+  };
+});
+
+						</code>
+					</pre>	
+				</section>
+
+				<section>
+					<h3>Service classes</h3>
+					<pre>
+						<code class="hljs" data-trim>
+class UserService {
+  /* @ngInject */
+  constructor($http) {
+    this.$http = $http;
+    this.firstName = 'John';						
+    this.lastName = 'Doe';
+  }
+  // getter
+  get fullName() {
+   return `${this.firstName} ${this.lastName}`;
+  }
+  // setter
+  set fullName(newValue) {
+    [this.firstName, this.lastName] = newValue.split(' ');
+  }
+}
+						</code>
+					</pre>
+				</section>
+
+				<section>
+					<h3>Classes</h3>
+					
+					<pre>
+						<code class="hljs" data-trim>
+class MyService extends BaseService {
+  constructor(initialData) {
+    super(initialData);
+    //...
+  }
+  updateData() {
+    //...
+    super.update();
+  }
+  static defaultData() {
+    // usable by calling MyService.defaultData()
+    return 'no data available';
+  }
+}
+						</code>
+					</pre>
+				</section>
+
+				<section>
+					<h3>Classes</h3>
+					<ul>
+						<li>Angular 1.x factories / directives / providers doesn't fit so good into class paradigm.</li>
+						<li>Though, there are some experiments with that at
+							<a href="http://www.michaelbromley.co.uk/blog/350/exploring-es6-classes-in-angularjs-1-x" target="_blank">
+								http://www.michaelbromley.co.uk/blog/350/exploring-es6-classes-in-angularjs-1-x
+							</a>
+						</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>5. Arrow Functions</h2>
+				</section>
+
+				<section>
+					<h3>Arrow Functions</h3>
+					<pre>
+						<code class="hljs" data-trim>
+class UserService {
+  /* @ngInject */
+  constructor($http) {
+    this.$http = $http;
+    this.users = [];
+  }
+  fetchUsers() {
+    return this.$http
+               .get('http://super-cool-api.com/users')
+               .then(response => {
+                  // arrows share the same lexical this 
+                  //as their surrounding code			
+                  this.users = response.data.users;
+               });
+    }
+}
+						</code>
+					</pre>
+				</section>
+
+				<section>
+					<h2>6. Destructuring</h2>
+				</section>
+
+				<section>
+					<h3>Array Destructuring</h3>
+					<pre>
+						<code class="hljs" data-trim>
+let arr = ['John', 'Doe'];
+let [firstName, lastName, country = 'Germany'] = arr;
+							
+console.log(firstName); // John
+console.log(lastName);  // Doe
+console.log(country);  // Germany
+						</code>
+					</pre>
+					<h3>Array + Spread operator</h3>
+					<pre>
+						<code class="hljs" data-trim>
+let arr = [1, 2, 3, 4];
+[a, ...rest] = arr;
+							
+console.log(a); // 1
+console.log(rest);  // [2, 3, 4]
+						</code>
+					</pre>
+				</section>
+
+				<section>
+					<h3>Object Destructuring</h3>
+					<pre>
+						<code class="hljs" data-trim>
+let obj = {
+  firstName: 'John',
+  lastName: 'Doe'	
+};
+const {firstName, lastName, country = 'Germany'} = obj;
+
+console.log(firstName); // John
+console.log(lastName);  // Doe
+console.log(country);  // Germany
+						</code>
+					</pre>					
+				</section>
+
+				<section>
+					<h3>Destructuring and Angular 1.x</h3>
+					<pre>
+						<code class="hljs" data-trim>
+angular.directive('myDirective', function () {
+  return {
+    controller: myController,
+    require: ['ngModel', 'other'],
+    link: function(scope, element, attrs, controllers) {
+      // destructuring in action
+      const [ngModelCtrl, otherCtrl] = controllers;
+      // ..							
+    }
+  };
+});
+						</code>
+					</pre>
+				</section>
+
+				<section>
+					<h3>Destructuring and Angular 1.x</h3>
+					<pre>
+						<code class="hljs" data-trim>
+angular.directive('myDirective', function () {
+  return {
+    controller: myController,
+    require: ['ngModel', 'other'],
+    // perform destructuring in function declaration
+    link: function(scope, element, attrs, [ngModelCtrl, otherCtrl]) {
+      //..
+    }
+  };
+});
+						</code>
+					</pre>
+				</section>
+
+				<section>
+					<h2>7. Promises</h2>
+				</section>
+
+				<section>
+					<p>We now have official API for promises :)</p>
+					
+					<pre>
+						<code class="hljs" data-trim>
+function timeout() {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => resolve('some value'), 2000);
+  });
+}
+
+timeout().then((value) => console.log(value));
+						</code>
+					</pre>
+				</section>
+
+				<section>
+					<p>Angular 1.3 introduces $q API similar to official spec</p>
+					<pre>
+						<code class="hljs" data-trim>
+function myFunctionThatReturnsAPromise() {
+  return $q(function (resolve, reject) {
+    anAsyncFunction(function (success) {
+      resolve(success);
+    }, function (error) {
+      reject(error);
+    });
+  });
+}
+
+myFunctionThatReturnsAPromise().then(resolveFn, rejectFn);
+						</code>
+					</pre>
+				</section>	
+
+				<section>
+					<h2>8. Map + Set / WeakMap + WeakSet</h2>					
+				</section>
+
+				<section>
+					<h3>Map / Set</h3>
+					<pre>
+						<code class="hljs" data-trim>
+// Map is a collection for storing values with arbitrary keys
+var map = new Map();
+map.set(2, 'value1');
+map.set(true, 'value2');
+// keys could be objects as well
+console.log(map.get("2")); // value1
+console.log(map.get(true)); // value2
+
+// Set is a collection for storing unique values
+var set = new Set();
+set.add('value1').add('value2').add('value1');
+assert(set.size === 2);
+assert(set.has('value2') === true);
+							
+// Map / Set additionally have iteration methods - keys(), values(), forEach()							
+						</code>
+					</pre>
+				</section>
+
+				<section>
+					<h3>WeakMap / WeakSet</h3>
+					
+					<p>
+						<small>
+							Same as Map / Set, but leak-free. Allows the garbage collector to delete its elements. 
+							If some object is stored only in WeakMap / WeakSet, then it's deleted from memory.
+						</small>						
+					</p>
+					
+					<pre>
+						<code class="hljs" data-trim>
+let users = [
+  {name: 'Peter'},
+  {name: 'John'},
+  {name: 'Kate'}
+];
+let weakMap = new WeakMap();
+
+weakMap.set(users[0], 'some info 1');
+weakMap.set(users[1], 'some info 2');
+weakMap.set(users[2], 'some info 3');
+
+users.splice(0, 1); // we deleted 'Peter' from users
+console.log(weakMap.get(users[0])); // this is now 'some info 2'
+						</code>
+					</pre>
+					
+				</section>
+
+				<section>
+					<h3>WeakMap and Angular</h3>
+					<p>
+						<small>
+							Could be considered as private class variables. Additional benefit is memory management for free.
+						</small>
+					</p>
+					
+					<pre>
+						<code class="hljs" data-trim>
+var _state = new WeakMap();
+var _accountService = new WeakMap();
+
+class SigninController {
+  constructor($state, accountService) {
+    _state.set(this, $state);
+    _accountService.set(this, accountService);
+  }
+  login() {
+    _accountService.get(this).login().then(()=> {
+      _state.get(this).go('somewhere');
+    });
+  };
+}
+						</code>
+					</pre>
+				</section>
+				
+				<section>
+					<h2>9. Generators</h2>					
+				</section>
+
+				<section>
+					<h3>Generators</h3>
+					<ul>
+						<li>New type of JavaScript functions.</li>
+						<li>Generator are able to stop their execution flow at arbitrary moments of time and return intermediate result. Later generator's flow could be resumed.</li>
+						<li>Convenient for generating and iterating over sequences.</li>
+						<li>Additional use-case is controlling of asynchronous flows.</li>
+					</ul>
+				</section>
+
+				<section>
+					<h3>Generators</h3>
+					<pre>
+						<code class="hljs" data-trim>
+function* generateSequence() {
+  yield 1;
+  yield 2;
+  return 3;
+}
+
+let generator = generateSequence();
+console.log(generator.next());  // Object {value: 1, done: false}
+console.log(generator.next());  // Object {value: 2, done: false}
+console.log(generator.next());  // Object {value: 3, done: true}
+						</code>
+					</pre>
+				</section>
+
+				<section>
+					<h2>Generators + async + co.js</h2>
+					<pre>
+						<code class="hljs" data-trim>
+let $http = require('request-promise-json');
+let co = require('co');
+
+function *bitcoinRate() {
+  let r = yield $http.get('http://api.bitcoinaverage.com/ticker/USD');
+  // next line won't be executed until HTTP request is completed
+  console.log('1 Bitcoin == ' + r.last + ' USD');
+}
+
+co(bitcoinRate);
+						</code>
+					</pre>
+				</section>
+
+				<section>
+					<h3>Generators + Protractor</h3>
+					<pre>
+						<code class="hljs" data-trim>
+var co = require('co');
+var cats = require('./cats.json');
+var EC = protractor.ExpectedConditions;
+
+beforeEach(co.wrap(function* () {
+  yield http.put(DB_URL + '.json', cats);
+  yield browser.get('/index.html');
+
+  // wait for the for the model to be loaded (for the cats to be ready)
+  var mainElement = element(by.className('topcat-container'));
+  yield browser.wait(EC.presenceOf(mainElement));
+  yield browser.wait(function () {
+    return mainElement.evaluate('vm.ready');
+  });
+}));
+						</code>
+					</pre>
+				</section>
+
+				<section>
+					<h3>Generators + Protractor</h3>
+					<ul>
+						<li>Check out this video about Protractor / Generators by Uri Shaked 
+							<a href="https://www.youtube.com/watch?v=mtcRjMFPMYs" target="_blank">
+								https://www.youtube.com/watch?v=mtcRjMFPMYs
+							</a>
+						</li>
+						<li>
+							Check out this repository for more code
+							<a href="https://github.com/urish/ac-generators" target="_blank">
+								https://github.com/urish/ac-generators
+							</a>							
+						</li>
+						<li>
+							Check out this video about async generators by Jafar Husain
+							<a href="https://www.youtube.com/watch?v=DqMFX91ToLw" target="_blank">
+								https://www.youtube.com/watch?v=DqMFX91ToLw
+							</a>
+						</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>ES2016</h2>					
+				</section>
+
+				<section>
+					<h3>ES2016</h3>
+					<ul>
+						<li>Not part of the current ECMAScript standard.</li>
+						<li>Some of these features might become a standard in 2016.</li>
+						<li>You could use them now as an experimental features. But be careful, they might be thrown away from the standard in the future.</li>
+					</ul>
+				</section>
+				
+				<section>
+					<h2>Async / Await</h2>
+				</section>
+				
+				<section>
+					<h3>Async / Await</h3>
+					<pre>
+						<code class="hljs" data-trim>
+async function doAsyncOp () {
+  var val = await asynchronousOperation();
+  // this line will be executed only after previous one is completed						
+  return val;
+};
+
+async function main() {
+  var val = await doAsyncOp();
+  // this line will be executed only after previous one is completed
+  console.log(val);
+}
+							
+main();
+							</code>
+					</pre>
+				</section>
+
+				<section>
+					<h3>Async / Await and $http</h3>
+					<p>If you return Promise from function then it could be used in await block.</p>
+					<pre>
+						<code class="hljs" data-trim>
+async function doRequest() {
+  var value = await $http('http://awesome-website.com/api');
+  console.log(`Wow, we have this value - ${value}`);
+}
+						</code>
+					</pre>
+				</section>
+
+				<section>
+					<h3>Async / Await and Mocha tests</h3>
+					<pre>
+						<code class="hljs" data-trim>
+function doRequest(number) {
+  return new Promise((resolve, reject) => {
+	doSomeAsyncOperation(number).then((value) => resolve(value));
+  });
+}
+it('should check that everything is ok', async () => {
+  let response = await doRequest(1000);
+  expect(variable).toEqual(response);
+});
+						</code>
+					</pre>
+				</section>
+
+				<section>
+					<h2>Class Instance Fields / Static Properties</h2>
+				</section>
+
+				<section>
+					<h3>Class Instance Fields / Static Properties</h3>
+					
+					<pre>
+						<code class="hljs" data-trim>
+class MyService() {
+  myProp = 12;
+  static myStaticProp = 34;
+							
+  constructor() {
+    console.log(this.myProp); // Prints '12'
+    console.log(MyService.myStaticProp); // Prints '34'
+  }
+}
+						</code>
+					</pre>	
+				</section>
+
+				<section>
+					<h2>Decorators</h2>
+				</section>
+
+				<section>
+					<h3>Decorators</h3>
+
+					<blockquote cite="https://github.com/wycats/javascript-decorators">
+						&ldquo;Decorators make it possible to annotate and modify classes and properties at design time.&rdquo;
+					</blockquote>
+					<a href="https://github.com/wycats/javascript-decorators" target="_blank">https://github.com/wycats/javascript-decorators</a>
+					<p>
+						Decorators could be used for a lot of fancy stuff including reducing amount of boilerplate code.
+					</p>
+				</section>
+
+				<section>
+					<h3>Decorators and Angular</h3>
+					<pre>	
+						<code class="hljs" data-trim>
+@Inject('$http', 'UserService')
+class Account {
+  constructor($http, UserService) {
+    this.$http = $http;
+    this.UserService = UserService;
+  }
+}
+						</code>
+					</pre>
+					<pre>						
+						<code class="hljs" data-trim>
+function Inject(...dependencies) {
+  return function decorator(target, key, descriptor) {
+    // target is our class constructor
+    target.$inject = dependencies;
+  };
+}
+						</code>
+					</pre>
+				</section>
+
+				<section>
+					<h3>Decorators and Angular</h3>
+					<ul>
+						<li>
+							<a href="http://martinmicunda.com/2015/07/13/how-to-use-ES2016-decorators-to-avoid-angular-1x-boilerplate-code/" target="_blank">
+								Read more
+							</a> about implementing your own Angular2-like decorators for Angular 1.x projects.
+						</li>
+						<li>
+							<a href="https://github.com/ngUpgraders/ng-forward" target="_blank">
+								https://github.com/ngUpgraders/ng-forward - 
+							</a>
+							community-driven project for those that want to write Angular 2.x style code in Angular 1.x. Currently alpha.
+						</li>
+					</ul>
+				</section>
+				
+				<section>
+					<img src="images/babel.png" style="max-height: 150px;">
+					<h2>How to use ES2015+ today?</h2>
+					<ul>
+						<li>
+							Rely on browser implementation (not every single feature is available) -
+							<a href="http://kangax.github.io/compat-table/es6/" target="_blank">
+								ES2015 compatibility table
+							</a> /
+							<a href="http://kangax.github.io/compat-table/es7/" target="_blank">
+								ES2016 compatibility table
+							</a>.				
+						</li> 
+						<li>Use a transpiler - 
+							<a href="https://babeljs.io/" target="_blank">Babel</a> / 
+							<a href="https://github.com/google/traceur-compiler" target="_blank">Traceur</a>.
+						</li>
+						<li>Use
+							<a href="https://webpack.github.io/" target="_blank">Webpack</a> /
+							<a href="http://jspm.io/" target="_blank">JSPM</a> /
+							<a href="https://github.com/systemjs/systemjs" target="_blank">SystemJS</a> /
+							<a href="https://www.npmjs.com/package/babelify" target="_blank">Browserify transform</a> /
+							<a href="https://github.com/babel/grunt-babel" target="_blank">Grunt plugin</a> / 
+							Your Build System plugin.
+						</li>
+						<li>Server-side node.js >= 4.0.</li>
+					</ul>
+				</section>				
+
+				<section>
+					<h2>Some notes about testing</h2>
+					<ul>
+						<li>Whenever possible use and test pure ES2015 modules instead of Angular modules.</li>
+						<li>For code coverage report use <a href="https://github.com/douglasduteil/isparta" target="_blank">isparta</a> instead of istanbul. It supports ES2015.</li>
+						<li>For code coverage with Karma use isparta instrumenter. More info about setup is available
+							<a href="http://martinmicunda.com/2015/10/19/how-to-start-writing-unit-tests-with-es6-angular-1x-and-jspm/" target="_blank">here</a>
+						</li>
+					</ul>
+				</section>
+
+				<section>
+					<h2>Angular2</h2>
+				</section>
+
+				<section>
+					<h3>Angular2</h3>
+					<ul>
+						<li>You are able to write code in ES5 or ES2015 or TypeScript.</li>
+						<li>Best developer experience could be achieved by using TypeScript.</li>
+						<li>In case you decide to use TypeScript the time you've invested into the learning of ES2015 won't be waste. 
+							TypeScript includes a lot of features of ES2015 and some additional ones.</li>
+					</ul>
+				</section>
+				
+				<section>
+					<h3>Angular2 APP code excerpt</h3>
+					<pre>						
+						<code class="hljs" data-trim>
+import {bootstrap, Component, FORM_DIRECTIVES} from 'angular2/angular2';
+class Hero {
+  id: number;
+  name: string;
+}
+@Component({
+  selector: 'my-app',
+  template:`.. some template ..`
+})
+class AppComponent {
+  public title = 'Tour of Heroes';
+  public hero: Hero = {
+   id: 1,
+   name: 'Windstorm'
+  };
+}
+bootstrap(AppComponent);
+						</code>
+					</pre>
+				</section>
+
+				<section>
+					<h3>TypeScript includes</h3>
+					<ul>
+						<li>A lot of ES2015 / ES2016 (or ES2015 / ES2016-like) features.</li>
+						<li>Type annotations, type inference and compile-time type checking. Beneficial for complex applications.</li>
+						<li>Interfaces / Enumerated types / Generics. </li>
+					</ul>					
+				</section>
+
+				<section>
+					<h2>Thank you!</h2>
+				</section>
+								
+				<section style="text-align: left;">
+					<h2>Links Part 1</h2>
+					<p>
+						- <a href="http://kangax.github.io/compat-table/es6/" target="_blank">http://kangax.github.io/compat-table/es6/</a> <br>
+						- <a href="http://kangax.github.io/compat-table/es7/" target="_blank">http://kangax.github.io/compat-table/es7/</a> <br>
+						- <a href="https://babeljs.io/docs/learn-es2015/" target="_blank">https://babeljs.io/docs/learn-es2015/</a> <br>
+						- <a href="http://habrahabr.ru/post/257305/" target="_blank">http://habrahabr.ru/post/257305/</a> <br>
+						- <a href="http://www.michaelbromley.co.uk/blog/350/exploring-es6-classes-in-angularjs-1-x" target="_blank">http://www.michaelbromley.co.uk/blog/350/exploring-es6-classes-in-angularjs-1-x</a> <br>
+						- <a href="http://blog.thoughtram.io/angularjs/es6/2015/01/23/exploring-angular-1.3-using-es6.html" target="_blank">http://blog.thoughtram.io/angularjs/es6/2015/...html</a> <br>
+						- <a href="https://gist.github.com/stryju/545c67519dbf89014686" target="_blank">https://gist.github.com/stryju/545c67519dbf89014686</a> <br>
+						- <a href="http://martinmicunda.com/2015/07/13/how-to-use-ES2016-decorators-to-avoid-angular-1x-boilerplate-code/" target="_blank">http://martinmicunda.com/2015/07/13/how-to-use-ES2016-decorators-to-avoid-angular-1x-boilerplate-code/</a> <br>
+						- <a href="http://martinmicunda.com/2015/10/19/how-to-start-writing-unit-tests-with-es6-angular-1x-and-jspm/" target="_blank">http://martinmicunda.com/2015/10/19/how-to-start-writing-unit-tests-with-es6-angular-1x-and-jspm/</a> <br>
+					</p>
+				</section>
+
+				<section style="text-align: left;">
+					<h2>Links Part 2</h2>
+					<p>
+						- <a href="https://medium.com/@tomastrajan/proper-testing-of-angular-js-applications-with-es6-modules-8cf31113873f" target="_blank">https://medium.com/@tomastrajan/proper-testing-of-angular-js-applications-with-es6-modules-8cf31113873f</a> <br>
+						- <a href="http://www.sitepoint.com/simplifying-asynchronous-coding-es7-async-functions/" target="_blank">http://www.sitepoint.com/simplifying-asynchronous-coding-es7-async-functions/</a> <br>
+						- <a href="https://github.com/ngUpgraders/ng-forward" target="_blank">https://github.com/ngUpgraders/ng-forward</a> <br>
+						- <a href="https://github.com/MikeRyan52/angular-decorators" target="_blank">https://github.com/MikeRyan52/angular-decorators</a> <br>
+						- <a href="https://github.com/wycats/javascript-decorators" target="_blank">https://github.com/wycats/javascript-decorators</a> <br>
+						- <a href="https://github.com/jeffmo/es-class-static-properties-and-fields" target="_blank">https://github.com/jeffmo/es-class-static-properties-and-fields</a> <br>
+					</p>
+				</section>
+
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
